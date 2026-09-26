@@ -3,11 +3,12 @@
 *.iml
 out/
 
+# Gradle
+.gradle/
+build/
+
 # Compiled class files
 *.class
-
-# Maven
-target/
 
 # OS files
 .DS_Store
