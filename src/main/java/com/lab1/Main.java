@@ -15,7 +15,8 @@ public class Main {
 
         try {
             List<Aircraft> loadedFleet = fileManager.loadFleet(
-                    Constants.DATA_FOLDER + "/aircraft_data" + Constants.FILE_EXTENSION);
+                    Constants.DATA_FOLDER + "/aircraft_data"
+                            + Constants.FILE_EXTENSION);
 
             Airline airline = new Airline("SkyLine Airways");
             for (Aircraft aircraft : loadedFleet) {
@@ -28,14 +29,17 @@ public class Main {
             airline.sortByRange();
             airline.printFleet();
 
-            System.out.println("\nAircraft with fuel consumption between 5000 and 7000 l/h:");
-            List<Aircraft> matches = airline.findByFuelConsumptionRange(5000, 7000);
+            System.out.println("\nAircraft with fuel consumption between"
+                    + " 5000 and 7000 l/h:");
+            List<Aircraft> matches =
+                    airline.findByFuelConsumptionRange(5000, 7000);
             for (Aircraft aircraft : matches) {
                 System.out.println(aircraft);
             }
 
         } catch (IOException e) {
-            System.err.println("Failed to load aircraft data: " + e.getMessage());
+            System.err.println(
+                    "Failed to load aircraft data: " + e.getMessage());
         }
     }
 }

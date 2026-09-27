@@ -4,10 +4,12 @@ public abstract class PassengerAircraft extends Aircraft {
     private final int seatCapacity;
     private final double luggageCapacityKg;
 
-    public PassengerAircraft(String model, String manufacturer, double maxRangeKm,
-                             double fuelConsumptionPerHour, double cruiseSpeedKmh,
-                             int seatCapacity, double luggageCapacityKg) {
-        super(model, manufacturer, maxRangeKm, fuelConsumptionPerHour, cruiseSpeedKmh);
+    public PassengerAircraft(String model, String manufacturer,
+                             double maxRangeKm, double fuelConsumptionPerHour,
+                             double cruiseSpeedKmh, int seatCapacity,
+                             double luggageCapacityKg) {
+        super(model, manufacturer, maxRangeKm, fuelConsumptionPerHour,
+                cruiseSpeedKmh);
 
         this.seatCapacity = seatCapacity;
         this.luggageCapacityKg = luggageCapacityKg;

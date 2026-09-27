@@ -13,7 +13,8 @@ public class AircraftFileManager {
     public List<Aircraft> loadFleet(String filename) throws IOException {
         List<Aircraft> fleet = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader =
+                     new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -27,6 +28,10 @@ public class AircraftFileManager {
                 System.arraycopy(fields, 1, data, 0, fields.length - 1);
 
                 Aircraft aircraft = AircraftFactory.createAircraft(type, data);
+                if (aircraft == null) {
+                    System.err.println("Skipping invalid line: " + line);
+                    continue;
+                }
                 fleet.add(aircraft);
             }
         }

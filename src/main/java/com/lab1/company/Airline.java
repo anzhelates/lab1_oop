@@ -29,7 +29,9 @@ public class Airline {
         this.fleet.add(aircraft);
     }
 
-    public void removeAircraft(Aircraft aircraft) { this.fleet.remove(aircraft); }
+    public void removeAircraft(Aircraft aircraft) {
+        this.fleet.remove(aircraft);
+    }
 
     public int calculateTotalPassengerCapacity() {
         int totalPassengerCapacity = 0;
@@ -55,7 +57,8 @@ public class Airline {
         fleet.sort(Comparator.comparingDouble(Aircraft::getMaxRangeKm));
     }
 
-    public List<Aircraft> findByFuelConsumptionRange(double minFuelPerHour, double maxFuelPerHour) {
+    public List<Aircraft> findByFuelConsumptionRange(double minFuelPerHour,
+                                                     double maxFuelPerHour) {
         if (minFuelPerHour < 0 || maxFuelPerHour < minFuelPerHour) {
             throw new IllegalArgumentException("Invalid range");
         }
@@ -72,8 +75,10 @@ public class Airline {
 
     public void printFleet() {
         System.out.println("Airline: " + name);
-        System.out.println("Total passenger capacity: " + calculateTotalPassengerCapacity() + " seats");
-        System.out.println("Total cargo capacity: " + calculateTotalCargoCapacityTons() + " tons");
+        System.out.println("Total passenger capacity: "
+                + calculateTotalPassengerCapacity() + " seats");
+        System.out.println("Total cargo capacity: "
+                + calculateTotalCargoCapacityTons() + " tons");
 
         for (int i = 0; i < fleet.size(); i++) {
             System.out.printf("%2d. %s%n", i + 1, fleet.get(i).toString());

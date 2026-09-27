@@ -7,7 +7,8 @@ public abstract class Aircraft {
     private final double fuelPerHour;
     private final double cruiseSpeedKmh;
 
-    public Aircraft(String model, String manufacturer, double maxRangeKm, double fuelPerHour, double cruiseSpeedKmh) {
+    public Aircraft(String model, String manufacturer, double maxRangeKm,
+                    double fuelPerHour, double cruiseSpeedKmh) {
         this.model = model;
         this.manufacturer = manufacturer;
         this.maxRangeKm = maxRangeKm;
@@ -41,6 +42,7 @@ public abstract class Aircraft {
     public String toString() {
         return String.format(
                 "%s %s: range: %.0f km, fuel: %.1f l/h, speed: %.0f km/h - %s",
-                manufacturer, model, maxRangeKm, fuelPerHour, cruiseSpeedKmh, getPayload());
+                manufacturer, model, maxRangeKm, fuelPerHour, cruiseSpeedKmh,
+                getPayload());
     }
 }
