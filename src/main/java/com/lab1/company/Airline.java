@@ -70,7 +70,7 @@ public class Airline {
         return result;
     }
 
-    public void printAircraft() {
+    public void printFleet() {
         System.out.println("Airline: " + name);
         System.out.println("Total passenger capacity: " + calculateTotalPassengerCapacity() + " seats");
         System.out.println("Total cargo capacity: " + calculateTotalCargoCapacityTons() + " tons");
