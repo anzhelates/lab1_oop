@@ -2,30 +2,29 @@ package com.lab1.model;
 
 public abstract class PassengerAircraft extends Aircraft {
     private final int seatCapacity;
-    private final double luggageCapacityKg;
+    private final double cargoHoldKg;
 
-    public PassengerAircraft(String model, String manufacturer,
-                             double maxRangeKm, double fuelConsumptionPerHour,
-                             double cruiseSpeedKmh, int seatCapacity,
-                             double luggageCapacityKg) {
-        super(model, manufacturer, maxRangeKm, fuelConsumptionPerHour,
-                cruiseSpeedKmh);
-
+    public PassengerAircraft(String registration, String manufacturer,
+                             String model, double maxRangeKm, double fuelBurnKgPerHour,
+                             int seatCapacity, double cargoHoldKg) {
+        super(registration, manufacturer, model, maxRangeKm,
+                fuelBurnKgPerHour);
+        if (seatCapacity <= 0 || cargoHoldKg < 0) {
+            throw new IllegalArgumentException(
+                    "Seats must be positive and cargo hold cannot be "
+                            + "negative");
+        }
         this.seatCapacity = seatCapacity;
-        this.luggageCapacityKg = luggageCapacityKg;
-    }
-
-    public int getSeatCapacity() {
-        return seatCapacity;
-    }
-
-    public double getLuggageCapacityKg() {
-        return luggageCapacityKg;
+        this.cargoHoldKg = cargoHoldKg;
     }
 
     @Override
-    public String getPayload() {
-        return String.format("Passenger capacity: %d seats, luggage: %.0f kg",
-                seatCapacity, luggageCapacityKg);
+    public int getPassengerCapacity() {
+        return seatCapacity;
+    }
+
+    @Override
+    public double getCargoCapacityKg() {
+        return cargoHoldKg;
     }
 }

@@ -1,22 +1,45 @@
 package com.lab1.model;
 
 public abstract class Aircraft {
+    private final String registration;
     private final String model;
     private final String manufacturer;
     private final double maxRangeKm;
     private final double fuelPerHour;
-    private final double cruiseSpeedKmh;
 
-    public Aircraft(String model, String manufacturer, double maxRangeKm,
-                    double fuelPerHour, double cruiseSpeedKmh) {
-        this.model = model;
-        this.manufacturer = manufacturer;
+    protected Aircraft(String registration, String manufacturer,
+                       String model, double maxRangeKm, double fuelPerHour) {
+        if (isBlank(registration) || isBlank(manufacturer)
+                || isBlank(model)) {
+            throw new IllegalArgumentException(
+                    "Registration, manufacturer and model are required");
+        }
+        if (!(maxRangeKm > 0 && fuelPerHour > 0)) {
+            throw new IllegalArgumentException(
+                    "Range and fuel burn must be positive");
+        }
+        this.registration = registration.trim();
+        this.manufacturer = manufacturer.trim();
+        this.model = model.trim();
         this.maxRangeKm = maxRangeKm;
         this.fuelPerHour = fuelPerHour;
-        this.cruiseSpeedKmh = cruiseSpeedKmh;
     }
 
-    public abstract String getPayload();
+    public abstract int getPassengerCapacity();
+
+    public abstract double getCargoCapacityKg();
+
+    public boolean canFly(double distanceKm) {
+        return distanceKm > 0 && distanceKm <= maxRangeKm;
+    }
+
+    public String getDisplayName() {
+        return manufacturer + " " + model;
+    }
+
+    public String getRegistration() {
+        return registration;
+    }
 
     public String getModel() {
         return model;
@@ -34,15 +57,12 @@ public abstract class Aircraft {
         return fuelPerHour;
     }
 
-    public double getCruiseSpeedKmh() {
-        return cruiseSpeedKmh;
-    }
-
     @Override
     public String toString() {
-        return String.format(
-                "%s %s: range: %.0f km, fuel: %.1f l/h, speed: %.0f km/h - %s",
-                manufacturer, model, maxRangeKm, fuelPerHour, cruiseSpeedKmh,
-                getPayload());
+        return registration + " (" + getDisplayName() + ")";
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.isBlank();
     }
 }
