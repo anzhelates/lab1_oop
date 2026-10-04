@@ -10,7 +10,7 @@ public final class AircraftFactory {
 
     private static final String TYPE_PASSENGER = "PASSENGER";
     private static final String TYPE_CARGO = "CARGO";
-    private static final int PASSENGER_FIELDS = 8;
+    private static final int PASSENGER_FIELDS = 7;
     private static final int CARGO_FIELDS = 7;
 
     private AircraftFactory() {
@@ -32,7 +32,7 @@ public final class AircraftFactory {
         requireFields(f, PASSENGER_FIELDS);
         return new PassengerAircraft(f[1], f[2], f[3],
                 Double.parseDouble(f[4]), Double.parseDouble(f[5]),
-                Integer.parseInt(f[6]), Double.parseDouble(f[7]));
+                Integer.parseInt(f[6]));
     }
 
     private static Aircraft createCargo(String[] f) {

@@ -43,14 +43,11 @@ public class Main {
         System.out.println(title);
         for (Aircraft aircraft : fleet) {
             System.out.printf(
-                    "  %-7s %-18s range %5.0f km, fuel %4.0f kg/h,"
-                            + " seats %3d, cargo %6.0f kg%n",
+                    "  %-7s %-18s range %5.0f km, fuel %4.0f kg/h%n",
                     aircraft.getRegistration(),
                     aircraft.getDisplayName(),
                     aircraft.getMaxRangeKm(),
-                    aircraft.getFuelPerHour(),
-                    aircraft.getPassengerCapacity(),
-                    aircraft.getCargoCapacityKg());
+                    aircraft.getFuelPerHour());
         }
     }
 }

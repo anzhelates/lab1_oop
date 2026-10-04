@@ -6,11 +6,10 @@ public abstract class Aircraft {
     private final String manufacturer;
     private final double maxRangeKm;
     private final double fuelPerHour;
-    private final double cargoCapacityKg;
 
     protected Aircraft(String registration, String manufacturer,
                        String model, double maxRangeKm,
-                       double fuelPerHour, double cargoCapacityKg) {
+                       double fuelPerHour) {
         if (isBlank(registration) || isBlank(manufacturer)
                 || isBlank(model)) {
             throw new IllegalArgumentException(
@@ -20,22 +19,11 @@ public abstract class Aircraft {
             throw new IllegalArgumentException(
                     "Range and fuel burn must be positive");
         }
-        if (!(cargoCapacityKg >= 0)) {
-            throw new IllegalArgumentException(
-                    "Cargo capacity cannot be negative");
-        }
         this.registration = registration.trim();
         this.manufacturer = manufacturer.trim();
         this.model = model.trim();
         this.maxRangeKm = maxRangeKm;
         this.fuelPerHour = fuelPerHour;
-        this.cargoCapacityKg = cargoCapacityKg;
-    }
-
-    public abstract int getPassengerCapacity();
-
-    public double getCargoCapacityKg() {
-        return cargoCapacityKg;
     }
 
     public boolean canFly(double distanceKm) {

@@ -80,12 +80,12 @@ class AirlineTest {
         assertEquals(0.0, airline.calculateTotalCargoCapacityKg(), 1e-9);
 
         airline.addAircraft(new PassengerAircraft("N1", "Embraer", "E175",
-                3700, 2500, 76, 1500));
+                3700, 2500, 76));
         airline.addAircraft(new CargoAircraft("N2", "Boeing", "767-300F",
                 6025, 5700, 58000));
 
         assertEquals(76, airline.calculateTotalPassengerCapacity());
-        assertEquals(59500.0, airline.calculateTotalCargoCapacityKg(), 1e-9);
+        assertEquals(58000.0, airline.calculateTotalCargoCapacityKg(), 1e-9);
     }
 
     @Test

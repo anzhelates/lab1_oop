@@ -29,8 +29,11 @@ jacoco {
 
 jacocoTestReport {
     dependsOn test
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: ['com/lab1/Main*'])
+    }))
     reports {
-        xml.required = true
         html.required = true
+        xml.required = false
     }
 }

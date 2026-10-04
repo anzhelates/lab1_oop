@@ -21,15 +21,13 @@ class AircraftFactoryTest {
     @Test
     void createsPassengerAircraft() {
         Aircraft aircraft = AircraftFactory.createAircraft(new String[] {
-                "passenger", "N1", "Embraer", "E175", "3700", "2500", "76",
-                "1500"});
+                "passenger", "N1", "Embraer", "E175", "3700", "2500", "76"});
 
         PassengerAircraft passenger =
                 assertInstanceOf(PassengerAircraft.class, aircraft);
         assertEquals("N1", passenger.getRegistration());
         assertEquals("Embraer E175", passenger.getDisplayName());
         assertEquals(76, passenger.getPassengerCapacity());
-        assertEquals(1500, passenger.getCargoCapacityKg());
     }
 
     @Test
@@ -54,15 +52,16 @@ class AircraftFactoryTest {
     void rejectsMissingOrWrongNumberOfFields() {
         createFails((String[]) null);
         createFails();
+        createFails("PASSENGER", "N1", "Embraer", "E175", "3700", "2500");
         createFails("PASSENGER", "N1", "Embraer", "E175", "3700", "2500",
-                "76");
+                "76", "1500");
         createFails("CARGO", "N2", "Boeing", "747-8F", "9200", "8000");
     }
 
     @Test
     void rejectsBadOrInvalidNumbers() {
         createFails("PASSENGER", "N1", "Embraer", "E175", "3700", "2500",
-                "many", "1500");
+                "many");
         createFails("CARGO", "N2", "Boeing", "747-8F", "-5", "8000",
                 "134000");
     }

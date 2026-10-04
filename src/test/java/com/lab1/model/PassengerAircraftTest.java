@@ -15,7 +15,7 @@ class PassengerAircraftTest {
     @BeforeEach
     void setUp() {
         aircraft = new PassengerAircraft(" N201SL ", "Embraer", "E175",
-                3700, 2500, 76, 1500);
+                3700, 2500, 76);
     }
 
     @Test
@@ -27,7 +27,6 @@ class PassengerAircraftTest {
         assertEquals(3700, aircraft.getMaxRangeKm());
         assertEquals(2500, aircraft.getFuelPerHour());
         assertEquals(76, aircraft.getPassengerCapacity());
-        assertEquals(1500, aircraft.getCargoCapacityKg());
         assertEquals("N201SL (Embraer E175)", aircraft.toString());
     }
 
@@ -39,39 +38,28 @@ class PassengerAircraftTest {
     }
 
     @Test
-    void allowsZeroCargoHold() {
-        PassengerAircraft noHold = new PassengerAircraft("N1", "Embraer",
-                "E175", 3700, 2500, 76, 0);
-
-        assertEquals(0, noHold.getCargoCapacityKg());
-    }
-
-    @Test
     void rejectsMissingText() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PassengerAircraft(null, "Embraer", "E175",
-                        3700, 2500, 76, 1500));
+                        3700, 2500, 76));
         assertThrows(IllegalArgumentException.class, () ->
                 new PassengerAircraft("N1", " ", "E175",
-                        3700, 2500, 76, 1500));
+                        3700, 2500, 76));
         assertThrows(IllegalArgumentException.class, () ->
                 new PassengerAircraft("N1", "Embraer", " ",
-                        3700, 2500, 76, 1500));
+                        3700, 2500, 76));
     }
 
     @Test
     void rejectsInvalidNumbers() {
         assertThrows(IllegalArgumentException.class, () ->
                 new PassengerAircraft("N1", "Embraer", "E175",
-                        0, 2500, 76, 1500));
+                        0, 2500, 76));
         assertThrows(IllegalArgumentException.class, () ->
                 new PassengerAircraft("N1", "Embraer", "E175",
-                        3700, -1, 76, 1500));
+                        3700, -1, 76));
         assertThrows(IllegalArgumentException.class, () ->
                 new PassengerAircraft("N1", "Embraer", "E175",
-                        3700, 2500, 0, 1500));
-        assertThrows(IllegalArgumentException.class, () ->
-                new PassengerAircraft("N1", "Embraer", "E175",
-                        3700, 2500, 76, -1));
+                        3700, 2500, 0));
     }
 }

@@ -5,17 +5,15 @@ public class PassengerAircraft extends Aircraft {
 
     public PassengerAircraft(String registration, String manufacturer,
                              String model, double maxRangeKm,
-                             double fuelPerHour, int seatCapacity,
-                             double cargoCapacityKg) {
+                             double fuelPerHour, int seatCapacity) {
         super(registration, manufacturer, model, maxRangeKm,
-                fuelPerHour, cargoCapacityKg);
+                fuelPerHour);
         if (seatCapacity <= 0) {
             throw new IllegalArgumentException("Seats must be positive");
         }
         this.seatCapacity = seatCapacity;
     }
 
-    @Override
     public int getPassengerCapacity() {
         return seatCapacity;
     }

@@ -1,6 +1,8 @@
 package com.lab1.company;
 
 import com.lab1.model.Aircraft;
+import com.lab1.model.CargoAircraft;
+import com.lab1.model.PassengerAircraft;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,7 +46,9 @@ public class Airline {
     public int calculateTotalPassengerCapacity() {
         int total = 0;
         for (Aircraft aircraft : fleet) {
-            total += aircraft.getPassengerCapacity();
+            if (aircraft instanceof PassengerAircraft passenger) {
+                total += passenger.getPassengerCapacity();
+            }
         }
         return total;
     }
@@ -52,7 +56,9 @@ public class Airline {
     public double calculateTotalCargoCapacityKg() {
         double total = 0;
         for (Aircraft aircraft : fleet) {
-            total += aircraft.getCargoCapacityKg();
+            if (aircraft instanceof CargoAircraft cargo) {
+                total += cargo.getCargoCapacityKg();
+            }
         }
         return total;
     }

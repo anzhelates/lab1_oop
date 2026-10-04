@@ -21,7 +21,7 @@ class AircraftLoaderTest {
     @Test
     void loadsAircraftAndIgnoresBlankLinesAndSpaces() throws IOException {
         String text = "\n   \n"
-                + "PASSENGER;N1;Embraer;E175;3700;2500;76;1500\n"
+                + "PASSENGER;N1;Embraer;E175;3700;2500;76\n"
                 + " CARGO ; N2 ; Boeing ; 747-8F ; 9200 ; 8000 ; 134000 \n";
 
         List<Aircraft> fleet = loader.load(new StringReader(text));

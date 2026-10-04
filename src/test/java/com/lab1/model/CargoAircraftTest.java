@@ -17,10 +17,9 @@ class CargoAircraftTest {
     }
 
     @Test
-    void carriesCargoButNoPassengers() {
+    void exposesCargoAircraftData() {
         assertEquals("N601CG", aircraft.getRegistration());
         assertEquals("Airbus A300-600F", aircraft.getDisplayName());
-        assertEquals(0, aircraft.getPassengerCapacity());
         assertEquals(48000, aircraft.getCargoCapacityKg());
     }
 
