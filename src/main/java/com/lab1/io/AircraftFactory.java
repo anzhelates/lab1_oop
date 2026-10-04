@@ -17,6 +17,9 @@ public final class AircraftFactory {
     }
 
     public static Aircraft createAircraft(String[] fields) {
+        if (fields == null || fields.length == 0) {
+            throw new IllegalArgumentException("Aircraft fields are required");
+        }
         return switch (fields[0].toUpperCase(Locale.ROOT)) {
             case TYPE_PASSENGER -> createPassenger(fields);
             case TYPE_CARGO -> createCargo(fields);

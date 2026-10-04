@@ -13,15 +13,15 @@ import java.util.List;
 
 public class AircraftLoader {
 
-    private static final String LINE_SEPARATOR_REGEX = "\\s*;\\s*";
+    private static final String FIELD_SEPARATOR_REGEX = "\\s*;\\s*";
 
     public List<Aircraft> loadFromResource(String name) throws IOException {
-        InputStream stream = AircraftLoader.class.getResourceAsStream(name);
-        if (stream == null) {
-            throw new IOException("Resource not found: " + name);
-        }
-        try (Reader reader =
-                     new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+        try (InputStream stream = AircraftLoader.class.getResourceAsStream(name)) {
+            if (stream == null) {
+                throw new IOException("Resource not found: " + name);
+            }
+            Reader reader =
+                    new InputStreamReader(stream, StandardCharsets.UTF_8);
             return load(reader);
         }
     }
@@ -39,7 +39,7 @@ public class AircraftLoader {
             }
             try {
                 aircraft.add(AircraftFactory.createAircraft(
-                        line.split(LINE_SEPARATOR_REGEX, -1)));
+                        line.split(FIELD_SEPARATOR_REGEX, -1)));
             } catch (IllegalArgumentException e) {
                 throw new IOException(
                         "Line " + lineNumber + ": " + e.getMessage(), e);

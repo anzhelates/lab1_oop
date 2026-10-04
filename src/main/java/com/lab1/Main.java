@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
 
     private static final String AIRLINE_NAME = "SkyLine Airways";
-    private static final String FLEET_RESOURCE = "/fleet.txt";
+    private static final String FLEET_RESOURCE = "/aircraft_data.txt";
     private static final double MIN_FUEL_KG_PER_HOUR = 5000;
     private static final double MAX_FUEL_KG_PER_HOUR = 7000;
     private static final double LONG_ROUTE_KM = 14000;
