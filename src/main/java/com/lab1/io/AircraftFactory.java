@@ -1,37 +1,48 @@
-package com.lab1.model;
+package com.lab1.io;
 
-public class AircraftFactory {
+import com.lab1.model.Aircraft;
+import com.lab1.model.CargoAircraft;
+import com.lab1.model.PassengerAircraft;
 
-    public static Aircraft createAircraft(String type, String[] parts) {
-        try {
-            return switch (type) {
-                case "REGIONAL" -> new RegionalJet(parts[0], parts[1],
-                        Double.parseDouble(parts[2]),
-                        Double.parseDouble(parts[3]),
-                        Double.parseDouble(parts[4]),
-                        Integer.parseInt(parts[5]),
-                        Double.parseDouble(parts[6]),
-                        Double.parseDouble(parts[7]));
-                case "WIDEBODY" -> new WideBodyJet(parts[0], parts[1],
-                        Double.parseDouble(parts[2]),
-                        Double.parseDouble(parts[3]),
-                        Double.parseDouble(parts[4]),
-                        Integer.parseInt(parts[5]),
-                        Double.parseDouble(parts[6]),
-                        Boolean.parseBoolean(parts[7]));
-                case "CARGO" -> new CargoAircraft(parts[0], parts[1],
-                        Double.parseDouble(parts[2]),
-                        Double.parseDouble(parts[3]),
-                        Double.parseDouble(parts[4]),
-                        Integer.parseInt(parts[5]),
-                        Double.parseDouble(parts[6]));
-                default -> null;
-            };
-        } catch (Exception e) {
-            System.err.println(
-                    "Error parsing line: " + type + " "
-                            + String.join("|", parts));
-            return null;
+import java.util.Locale;
+
+public final class AircraftFactory {
+
+    private static final String TYPE_PASSENGER = "PASSENGER";
+    private static final String TYPE_CARGO = "CARGO";
+    private static final int PASSENGER_FIELDS = 8;
+    private static final int CARGO_FIELDS = 7;
+
+    private AircraftFactory() {
+    }
+
+    public static Aircraft createAircraft(String[] fields) {
+        return switch (fields[0].toUpperCase(Locale.ROOT)) {
+            case TYPE_PASSENGER -> createPassenger(fields);
+            case TYPE_CARGO -> createCargo(fields);
+            default -> throw new IllegalArgumentException(
+                    "Unknown aircraft type: " + fields[0]);
+        };
+    }
+
+    private static Aircraft createPassenger(String[] f) {
+        requireFields(f, PASSENGER_FIELDS);
+        return new PassengerAircraft(f[1], f[2], f[3],
+                Double.parseDouble(f[4]), Double.parseDouble(f[5]),
+                Integer.parseInt(f[6]), Double.parseDouble(f[7]));
+    }
+
+    private static Aircraft createCargo(String[] f) {
+        requireFields(f, CARGO_FIELDS);
+        return new CargoAircraft(f[1], f[2], f[3],
+                Double.parseDouble(f[4]), Double.parseDouble(f[5]),
+                Double.parseDouble(f[6]));
+    }
+
+    private static void requireFields(String[] fields, int expected) {
+        if (fields.length != expected) {
+            throw new IllegalArgumentException("Expected " + expected
+                    + " fields but found " + fields.length);
         }
     }
 }

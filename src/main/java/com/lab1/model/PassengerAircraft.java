@@ -1,6 +1,6 @@
 package com.lab1.model;
 
-public abstract class PassengerAircraft extends Aircraft {
+public class PassengerAircraft extends Aircraft {
     private final int seatCapacity;
     private final double cargoHoldKg;
 
