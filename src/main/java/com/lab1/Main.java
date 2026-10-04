@@ -1,45 +1,56 @@
 package com.lab1;
 
 import com.lab1.company.Airline;
-import com.lab1.io.AircraftFileManager;
+import com.lab1.io.AircraftLoader;
 import com.lab1.model.Aircraft;
-import com.lab1.io.Constants;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
-        AircraftFileManager fileManager = new AircraftFileManager();
+    private static final String AIRLINE_NAME = "SkyLine Airways";
+    private static final String FLEET_RESOURCE = "/fleet.txt";
+    private static final double MIN_FUEL_KG_PER_HOUR = 5000;
+    private static final double MAX_FUEL_KG_PER_HOUR = 7000;
+    private static final double LONG_ROUTE_KM = 14000;
 
-        try {
-            List<Aircraft> loadedFleet = fileManager.loadFleet(
-                    Constants.DATA_FOLDER + "/aircraft_data"
-                            + Constants.FILE_EXTENSION);
+    public static void main(String[] args) throws IOException {
+        Airline airline = new Airline(AIRLINE_NAME);
+        for (Aircraft aircraft
+                : new AircraftLoader().loadFromResource(FLEET_RESOURCE)) {
+            airline.addAircraft(aircraft);
+        }
 
-            Airline airline = new Airline("SkyLine Airways");
-            for (Aircraft aircraft : loadedFleet) {
-                airline.addAircraft(aircraft);
-            }
+        System.out.println("Airline: " + airline.getName());
+        System.out.println("Total passenger capacity: "
+                + airline.calculateTotalPassengerCapacity() + " seats");
+        System.out.printf("Total cargo capacity: %.1f tons%n",
+                airline.calculateTotalCargoCapacityKg() / 1000);
 
-            airline.printFleet();
+        printFleet("Fleet:", airline.getFleet());
+        printFleet("Sorted by range:", airline.getFleetSortedByRange());
+        printFleet(String.format("Fuel consumption %.0f-%.0f kg/h:",
+                        MIN_FUEL_KG_PER_HOUR, MAX_FUEL_KG_PER_HOUR),
+                airline.findByFuelConsumptionRange(MIN_FUEL_KG_PER_HOUR,
+                        MAX_FUEL_KG_PER_HOUR));
+        printFleet(String.format("Able to fly %.0f km:", LONG_ROUTE_KM),
+                airline.findAircraftForRoute(LONG_ROUTE_KM));
+    }
 
-            System.out.println("\nSorted by range:");
-            airline.sortByRange();
-            airline.printFleet();
-
-            System.out.println("\nAircraft with fuel consumption between"
-                    + " 5000 and 7000 l/h:");
-            List<Aircraft> matches =
-                    airline.findByFuelConsumptionRange(5000, 7000);
-            for (Aircraft aircraft : matches) {
-                System.out.println(aircraft);
-            }
-
-        } catch (IOException e) {
-            System.err.println(
-                    "Failed to load aircraft data: " + e.getMessage());
+    private static void printFleet(String title, List<Aircraft> fleet) {
+        System.out.println();
+        System.out.println(title);
+        for (Aircraft aircraft : fleet) {
+            System.out.printf(
+                    "  %-7s %-18s range %5.0f km, fuel %4.0f kg/h,"
+                            + " seats %3d, cargo %6.0f kg%n",
+                    aircraft.getRegistration(),
+                    aircraft.getDisplayName(),
+                    aircraft.getMaxRangeKm(),
+                    aircraft.getFuelPerHour(),
+                    aircraft.getPassengerCapacity(),
+                    aircraft.getCargoCapacityKg());
         }
     }
 }
