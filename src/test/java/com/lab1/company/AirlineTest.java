@@ -107,13 +107,15 @@ class AirlineTest {
         Aircraft low = mockAircraft("N1", 1000, 600);
         Aircraft lowerBound = mockAircraft("N2", 1000, 5000);
         Aircraft upperBound = mockAircraft("N3", 1000, 7000);
+        Aircraft high = mockAircraft("N4", 1000, 9500);
         airline.addAircraft(low);
         airline.addAircraft(lowerBound);
         airline.addAircraft(upperBound);
+        airline.addAircraft(high);
 
         assertEquals(List.of(lowerBound, upperBound),
                 airline.findByFuelConsumptionRange(5000, 7000));
-        assertTrue(airline.findByFuelConsumptionRange(8000, 9000)
+        assertTrue(airline.findByFuelConsumptionRange(10000, 11000)
                 .isEmpty());
     }
 
