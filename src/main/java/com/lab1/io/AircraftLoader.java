@@ -1,41 +1,50 @@
 package com.lab1.io;
 
 import com.lab1.model.Aircraft;
-import com.lab1.model.AircraftFactory;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AircraftFileManager {
-    public List<Aircraft> loadFleet(String filename) throws IOException {
-        List<Aircraft> fleet = new ArrayList<>();
+public class AircraftLoader {
 
-        try (BufferedReader reader =
-                     new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) {
-                    continue;
-                }
+    private static final String LINE_SEPARATOR_REGEX = "\\s*;\\s*";
 
-                String[] fields = line.split(";");
-                String type = fields[0];
-                String[] data = new String[fields.length - 1];
-                System.arraycopy(fields, 1, data, 0, fields.length - 1);
+    public List<Aircraft> loadFromResource(String name) throws IOException {
+        InputStream stream = AircraftLoader.class.getResourceAsStream(name);
+        if (stream == null) {
+            throw new IOException("Resource not found: " + name);
+        }
+        try (Reader reader =
+                     new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+            return load(reader);
+        }
+    }
 
-                Aircraft aircraft = AircraftFactory.createAircraft(type, data);
-                if (aircraft == null) {
-                    System.err.println("Skipping invalid line: " + line);
-                    continue;
-                }
-                fleet.add(aircraft);
+    public List<Aircraft> load(Reader reader) throws IOException {
+        List<Aircraft> aircraft = new ArrayList<>();
+        BufferedReader buffered = new BufferedReader(reader);
+        int lineNumber = 0;
+        String line;
+        while ((line = buffered.readLine()) != null) {
+            lineNumber++;
+            line = line.trim();
+            if (line.isEmpty()) {
+                continue;
+            }
+            try {
+                aircraft.add(AircraftFactory.createAircraft(
+                        line.split(LINE_SEPARATOR_REGEX, -1)));
+            } catch (IllegalArgumentException e) {
+                throw new IOException(
+                        "Line " + lineNumber + ": " + e.getMessage(), e);
             }
         }
-
-        return fleet;
+        return aircraft;
     }
 }

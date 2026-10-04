@@ -1,8 +1,6 @@
 package com.lab1.company;
 
 import com.lab1.model.Aircraft;
-import com.lab1.model.CargoAircraft;
-import com.lab1.model.PassengerAircraft;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,11 +9,13 @@ import java.util.List;
 public class Airline {
 
     private final String name;
-    private final List<Aircraft> fleet;
+    private final List<Aircraft> fleet = new ArrayList<>();
 
     public Airline(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         this.name = name;
-        this.fleet = new ArrayList<>();
     }
 
     public String getName() { return name; }
@@ -26,62 +26,69 @@ public class Airline {
         if (aircraft == null) {
             throw new IllegalArgumentException("Aircraft cannot be null");
         }
-        this.fleet.add(aircraft);
+        for (Aircraft existing : fleet) {
+            if (existing.getRegistration().equals(
+                    aircraft.getRegistration())) {
+                throw new IllegalArgumentException(
+                        "Registration already in fleet: "
+                                + aircraft.getRegistration());
+            }
+        }
+        fleet.add(aircraft);
     }
 
-    public void removeAircraft(Aircraft aircraft) {
-        this.fleet.remove(aircraft);
+    public boolean removeAircraft(Aircraft aircraft) {
+        return fleet.remove(aircraft);
     }
 
     public int calculateTotalPassengerCapacity() {
-        int totalPassengerCapacity = 0;
+        int total = 0;
         for (Aircraft aircraft : fleet) {
-            if (aircraft instanceof PassengerAircraft passengerAircraft) {
-                totalPassengerCapacity += passengerAircraft.getSeatCapacity();
-            }
+            total += aircraft.getPassengerCapacity();
         }
-        return totalPassengerCapacity;
+        return total;
     }
 
-    public int calculateTotalCargoCapacityTons() {
-        int totalCargoCapacityTons = 0;
+    public double calculateTotalCargoCapacityKg() {
+        double total = 0;
         for (Aircraft aircraft : fleet) {
-            if (aircraft instanceof CargoAircraft cargoAircraft) {
-                totalCargoCapacityTons += cargoAircraft.getMaxPayloadTons();
-            }
+            total += aircraft.getCargoCapacityKg();
         }
-        return totalCargoCapacityTons;
+        return total;
     }
 
-    public void sortByRange() {
-        fleet.sort(Comparator.comparingDouble(Aircraft::getMaxRangeKm));
+    public List<Aircraft> getFleetSortedByRange() {
+        List<Aircraft> sorted = getFleet();
+        sorted.sort(Comparator.comparingDouble(Aircraft::getMaxRangeKm));
+        return sorted;
     }
 
-    public List<Aircraft> findByFuelConsumptionRange(double minFuelPerHour,
-                                                     double maxFuelPerHour) {
-        if (minFuelPerHour < 0 || maxFuelPerHour < minFuelPerHour) {
-            throw new IllegalArgumentException("Invalid range");
+    public List<Aircraft> findByFuelConsumptionRange(double minKgPerHour,
+                                                     double maxKgPerHour) {
+        if (minKgPerHour < 0 || maxKgPerHour < minKgPerHour) {
+            throw new IllegalArgumentException("Invalid fuel range");
         }
-
         List<Aircraft> result = new ArrayList<>();
         for (Aircraft aircraft : fleet) {
             double fuel = aircraft.getFuelPerHour();
-            if (fuel >= minFuelPerHour && fuel <= maxFuelPerHour) {
+            if (fuel >= minKgPerHour && fuel <= maxKgPerHour) {
                 result.add(aircraft);
             }
         }
         return result;
     }
 
-    public void printFleet() {
-        System.out.println("Airline: " + name);
-        System.out.println("Total passenger capacity: "
-                + calculateTotalPassengerCapacity() + " seats");
-        System.out.println("Total cargo capacity: "
-                + calculateTotalCargoCapacityTons() + " tons");
-
-        for (int i = 0; i < fleet.size(); i++) {
-            System.out.printf("%2d. %s%n", i + 1, fleet.get(i).toString());
+    public List<Aircraft> findAircraftForRoute(double distanceKm) {
+        if (distanceKm <= 0) {
+            throw new IllegalArgumentException(
+                    "Distance must be positive");
         }
+        List<Aircraft> result = new ArrayList<>();
+        for (Aircraft aircraft : fleet) {
+            if (aircraft.canFly(distanceKm)) {
+                result.add(aircraft);
+            }
+        }
+        return result;
     }
 }
