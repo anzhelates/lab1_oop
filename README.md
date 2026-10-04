@@ -86,10 +86,10 @@ lab1_oop
         └── model/PassengerAircraftTest.java
 ```
 
-## Запуск
+## Запуск програми та тестів
 ```
-.\gradlew run     # запуск програми
-.\gradlew test    # тести та звіт покриття
+.\gradlew run
+.\gradlew test
 ```
 ## Стек технологій
 - Java 21
