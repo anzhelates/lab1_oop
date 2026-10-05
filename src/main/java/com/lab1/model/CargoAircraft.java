@@ -8,7 +8,7 @@ public class CargoAircraft extends Aircraft {
                          double fuelPerHour, double cargoCapacityKg) {
         super(registration, manufacturer, model, maxRangeKm,
                 fuelPerHour);
-        if (!(cargoCapacityKg > 0)) {
+        if (cargoCapacityKg <= 0) {
             throw new IllegalArgumentException(
                     "Cargo capacity must be positive");
         }
